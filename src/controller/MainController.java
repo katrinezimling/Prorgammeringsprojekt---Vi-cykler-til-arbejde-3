@@ -57,8 +57,6 @@ public class MainController {
     }
 
     public void Login() {
-//        AdminController adminController = new AdminController(db);
-//        adminController.printAdministratorMenu();
         input.nextLine();
         String username;
         int password;
@@ -68,9 +66,7 @@ public class MainController {
         password = input.nextInt();
         input.nextLine();
 
-        User currentUser = authenticateUser(username, password);
-
-        while (currentUser != null) {
+        currentUser = authenticateUser(username, password);
 
             if (currentUser.getType().equals("Administrator")) {
                 AdminController adminController = new AdminController(db);
@@ -81,23 +77,20 @@ public class MainController {
             } else if (currentUser.getType().equals("Holdkaptajn")) {
                 CaptainController captainController = new CaptainController(db);
                 captainController.printCaptionMenu();
-            } else {
-                System.out.println("Du har indtastet forkert brugernavn eller kodeord. ");
 
             }
         }
-    }
 
 
     public User authenticateUser(String username, int password) {
         for (User user : db.getUsers()) {
 
             if (username.equals(user.getUserName()) && (password == user.getPassWord())) {
-                return user;
+                currentUser = user;
             }
         }
 
-        return null;
+        return currentUser;
     }
 
     public boolean authenticateParticipantUser(String username, int password) {
@@ -174,7 +167,7 @@ public class MainController {
     }
 
     private void printTeams() {
-        System.out.printf("%-5s %-15s \n", "ID", "FIRMA", "KAPTAJN");
+        System.out.printf("%-5s %-15s %-15s \n", "ID", "FIRMA", "KAPTAJN");
         for (Team team : db.getTeams()) {
             int userIndex = db.getTeams().indexOf(team);
             System.out.printf("%-5s %-15s %-15s \n", userIndex, team.getFirm(),team.getCaptain());
