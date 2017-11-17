@@ -1,13 +1,10 @@
 package controller;
 
 import data.Data;
-import model.Main;
 import model.Team;
 import model.User;
 
 import java.util.Scanner;
-
-import static controller.MainController.*;
 
 
 public class AdminController extends CaptainController{
@@ -15,29 +12,35 @@ public class AdminController extends CaptainController{
 Scanner input = new Scanner(System.in);
 
 private Data db;
+private User currentUser;
 
-public AdminController (Data db){
-    super(db);
+public AdminController (Data db, User currentUser){
+    super(db, currentUser);
     this.db = db;
+    this.currentUser = currentUser;
 
 
 }
 
 public void printAdministratorMenu() {
-    System.out.println("   ADMINISTRATOR BRUGERMENU:  ");
-    System.out.println("");
-    System.out.println("1) Redigér deltageroplysniner");
-    System.out.println("Test");
-    System.out.println("2) Redigér holdoplysniner");
-    System.out.println("3) Vis aktivitetsstatus");
-    System.out.println("4) Vis oplysninger");
-    System.out.println("5) Vis en oversigt over virksomheds hold og dets holdkaptajner");
-    System.out.println("6) Vis en statistik over fordelingen af hold og hvilke virksomheder de repræsenterer");
-    System.out.println("7) slet deltager");
-    System.out.println("8) slet hold ");
-    System.out.println("9) Godkend Hold");
-    System.out.println("");
-    System.out.println("0) LOG UD");
+
+    do {
+
+
+        System.out.println("   ADMINISTRATOR BRUGERMENU:  ");
+        System.out.println("");
+        System.out.println("1) Redigér deltageroplysniner");
+        System.out.println("Test");
+        System.out.println("2) Redigér holdoplysniner");
+        System.out.println("3) Vis aktivitetsstatus");
+        System.out.println("4) Vis oplysninger");
+        System.out.println("5) Vis en oversigt over virksomheds hold og dets holdkaptajner");
+        System.out.println("6) Vis en statistik over fordelingen af hold og hvilke virksomheder de repræsenterer");
+        System.out.println("7) slet deltager");
+        System.out.println("8) slet hold ");
+        System.out.println("9) Godkend Hold");
+        System.out.println("");
+        System.out.println("0) LOG UD");
 
         int choice = input.nextInt();
         switch (choice) {
@@ -69,16 +72,15 @@ public void printAdministratorMenu() {
                 confirmTeam();
                 break;
             case 0:
-                logOff();
-                System.out.println("Du har valgt at logge ud");
+                currentUser = null;
                 break;
             default:
                 break;
-
         }
 
+    } while (currentUser != null);
 
-    }
+}
     private void confirmTeam() {
 
 
@@ -130,11 +132,133 @@ public void printAdministratorMenu() {
         }
     }
 
+    @Override
+    public void editParticipantInformation() {
+        int indexOfParticipantToChange;
+        String newUsername;
+        int newPassWord;
+        String newType;
+        String newCykelistType;
+        int newAlder;
+        String newEmail;
+        String newId;
+        String newName;
+        String newAktivitetsstatus;
 
+
+        User userToChange;
+
+        System.out.println("Vælg et af nedstående punkter:");
+        System.out.println("1)  Redigér navn:");
+        System.out.println("2)  Redigér alder:");
+        System.out.println("3)  Redigér ID:");
+        System.out.println("4)  Redigér email:");
+        System.out.println("5)  Redigér cyklisttype:");
+        System.out.println("6)  Redigér brugertype:");
+        System.out.println("7)  Redigér username:");
+        System.out.println("8)  Redigér password:");
+
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("Redigér navn:"); break;
+            case 2:
+                System.out.println("Redigér alder:"); break;
+            case 3:
+                System.out.println("Redigér ID:"); break;
+            case 4:
+                System.out.println("Redigér email:"); break;
+            case 5:
+                System.out.println("Redigér cyklisttype "); break;
+            case 6:
+                System.out.println("Redigér brugetype"); break;
+            case 7:
+                System.out.println("Redigér username"); break;
+            case 8:
+                System.out.println("Redigér password"); break;
+
+            default: System.out.println("Ugyldigt"); break;
+
+        }
+        printUser();
+
+        System.out.println("Vælg person - herefter kan du redigere");
+        indexOfParticipantToChange = input.nextInt();
+
+        userToChange = db.getUsers().get(indexOfParticipantToChange);
+
+        if (choice == 1) {
+            System.out.println("Indtast nyt navn");
+            input.nextLine();
+            newName = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setNavn(newName);
+        }
+
+        else if (choice == 2) {
+            System.out.println("Redigér Alder - Indtast ny Alder: ");
+            newAlder = input.nextInt();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setAlder(newAlder);
+        }
+        else if (choice == 3) {
+            System.out.println("Indtast nyt ID");
+            input.nextLine();
+            newId = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setId(newId);
+        }
+
+        else if (choice == 4) {
+            System.out.println("Indtast ny email");
+            input.nextLine();
+            newEmail = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setEmail(newEmail);
+        }
+
+        else if (choice == 5) {
+            System.out.println("Indtast ny Cykelisttype");
+            input.nextLine();
+            newCykelistType = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setCykelistType(newCykelistType);
+        }
+
+        else if (choice == 6) {
+            System.out.println("Indtast ny Brugertype");
+            input.nextLine();
+            newType = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setType(newType);
+        }
+
+        else if (choice == 7) {
+            System.out.println("Indtast nyt username");
+            input.nextLine();
+            newUsername = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setUserName(newUsername);
+        }
+
+
+        else if (choice == 8) {
+            System.out.println("Indtast password");
+            newPassWord = input.nextInt();
+            userToChange.setPassWord(newPassWord);
+        }
+
+        else {
+            System.out.println("Ugyldigt");
+        }
+
+        printUser();
+
+
+    }
 
     public void createUser() {
 
     }
-
 
 }
