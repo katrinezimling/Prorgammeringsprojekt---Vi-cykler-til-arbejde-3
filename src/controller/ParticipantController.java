@@ -233,11 +233,13 @@ public class ParticipantController {
     }
 
     public  void showOverveiwForFirmsAndCaptains () {
-        System.out.printf("%-5s %-25s %-8s\n", "NR.", "FIRMA", "KAPTAJN");
+        int i = 1;
+        System.out.printf("%-5s %-10s %-8s\n", "NR.", "FIRMA", "KAPTAJN");
         System.out.println("");
         for (Team team : db.getTeams()) {
             int teamIndex = db.getUsers().indexOf(team);
-            System.out.printf("%-5s %-25s %-8s\n", teamIndex, team.getFirm(), team.getCaptain());
+            System.out.printf("%-5s %-10s %-8s\n", teamIndex +i, team.getFirm(), team.getCaptain());
+            i++;
         }
         input.nextLine();
 
