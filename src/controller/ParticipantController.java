@@ -14,9 +14,11 @@ public class ParticipantController {
     Scanner input = new Scanner(System.in);
 
     private Data db;
+    private User currentUser;
 
     public ParticipantController(Data db) {
         this.db = db;
+        this.currentUser = currentUser;
 
     }
 
@@ -49,20 +51,31 @@ public class ParticipantController {
             case 5:
                 showStatistics();
                 break;
-            case 6:
-                logOff();
+            case 0:
+                currentUser = null;
                 break;
             default:
+                System.out.println("Indtast et tal mellem 0-5");
+                myFirstMehthod();
                 break;
-        }
+        } while (currentUser !=null);
     }
 
 
     public void editParticipantInformation () {
 
         int indexOfParticipantToChange;
-        int newAlder;
+        String newUsername;
         int newPassWord;
+        String newType;
+        String newCykelistType;
+        int newAlder;
+        String newEmail;
+        String newId;
+        String newName;
+        String newAktivitetsstatus;
+
+
         User userToChange;
 
         System.out.println("Vælg et af nedstående punkter:");
@@ -88,10 +101,8 @@ public class ParticipantController {
             case 5:
                 System.out.println("Redigér cyklisttype "); break;
             case 6:
-                System.out.println("Redigér brugetype"); break;
-            case 7:
                 System.out.println("Redigér username"); break;
-            case 8:
+            case 7:
                 System.out.println("Redigér password"); break;
 
             default: System.out.println("Ugyldigt"); break;
@@ -104,14 +115,55 @@ public class ParticipantController {
 
         userToChange = db.getUsers().get(indexOfParticipantToChange);
 
-        if (choice == 2) {
-            System.out.println("Indtast Alder");
+        if (choice == 1) {
+            System.out.println("Indtast nyt navn");
+            input.nextLine();
+            newName = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setNavn(newName);
+        }
+
+        else if (choice == 2) {
+            System.out.println("Redigér Alder - Indtast ny Alder: ");
             newAlder = input.nextInt();
             //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
             userToChange.setAlder(newAlder);
         }
+        else if (choice == 3) {
+            System.out.println("Indtast nyt ID");
+            input.nextLine();
+            newId = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setId(newId);
+        }
 
-        else if (choice == 8) {
+        else if (choice == 4) {
+            System.out.println("Indtast ny email");
+            input.nextLine();
+            newEmail = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setEmail(newEmail);
+        }
+
+        else if (choice == 5) {
+            System.out.println("Indtast ny Cykelisttype");
+            input.nextLine();
+            newCykelistType = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setCykelistType(newCykelistType);
+        }
+
+
+        else if (choice == 6) {
+            System.out.println("Indtast nyt username");
+            input.nextLine();
+            newUsername = input.nextLine();
+            //System.out.println("Redigér1:" + userToChange.getnewCykelistType() + newCykelistType());
+            userToChange.setUserName(newUsername);
+        }
+
+
+        else if (choice == 7) {
             System.out.println("Indtast password");
             newPassWord = input.nextInt();
             userToChange.setPassWord(newPassWord);
@@ -176,7 +228,7 @@ public class ParticipantController {
                 showInformation();
                 break;
         }
-        logOff();
+
 
     }
 
@@ -219,7 +271,7 @@ public class ParticipantController {
 
     }
 
-    private void printUser() {
+    void printUser() {
 
         System.out.printf("%-5s %-25s %-8s %-8s %-20s %-15s %-15s %-15s %-10s\n", "NR.", "NAVN", "ALDER", "ID", "EMAIL", "CYKLISTTYPE", "BRUGERTYPE", "USERNAME", "PASSWORD");
         System.out.println("");
